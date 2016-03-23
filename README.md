@@ -1,5 +1,8 @@
 # Berlin Geekettes Hackathon 2013
 
+
+![ScreenShot](img.png?raw=true)
+
 My first hackathon in Berlin :)
 
 I and another geekette realized a small web app to help you find and listen a song that you can only remember some words. 
