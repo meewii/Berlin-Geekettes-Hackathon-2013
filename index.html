@@ -1,0 +1,132 @@
+<!doctype html>
+<!--[if lte IE 6]> <html class="no-js ie6 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if IE 7]> <html class="no-js ie7 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if IE 8]> <html class="no-js ie8 ie678" lang="fr"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="fr"> <!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=10">
+	<title></title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<link rel="stylesheet" href="http://knacss.com/css/knacss.css" media="all">
+    <link href='http://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
+    <!--<link type="text/css" rel="stylesheet" href="skin/whitsa.css" />-->
+    <style type="text/css">
+		body {
+			background: #666;
+		}
+		
+		
+		.content, .results {
+			width: 700px;
+			background: #eee;
+			margin: 30px auto 0;
+			padding: 30px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+		}
+		
+		h1 {
+			font-family: 'Molle', georgia, serif;
+			font-size: 30px;
+			text-align:center;
+			margin-bottom: 20px;
+		}
+		
+		
+		textarea {
+			width: 100%;
+			height: 50px;
+			overflow: auto;
+		}
+		
+		.btn_submit {
+			float: right;
+			margin-top: 10px;
+		}
+		
+		
+		.songs .cover {
+			float: left;
+			margin-right: 10px;
+			border: 6px solid #FFF;
+		}
+		.songs .title {
+			margin:6px 0 5px;
+			font-size: 20px;
+		}
+		.songs .artist {
+			margin:0 0 5px;
+		}
+		.songs .album {
+			margin:0 0 5px;
+		}
+	</style>
+    
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" language="javascript" type="application/javascript"></script>
+    <script src="js/yquery.js" language="javascript" type="application/javascript"></script>
+    <script src="js/doDeezerCall.js" language="javascript" type="application/javascript"></script>
+    <script src="js/xmlSearchLyricText.js" language="javascript" type="application/javascript"></script>
+    <script src="js/xmlGetLyric.js" language="javascript" type="application/javascript"></script>
+
+    <script type="text/javascript" language="javascript">
+        var textareaval;
+
+
+		jQuery(function() {
+
+			jQuery('#_searchlyrics').click(function() {
+
+                //step1
+				textareaval = jQuery('#_typelyrics').val();
+								
+				//jQuery('#_results').html("<p>Great! You're research was \"" + textareaval + "\"</p>");
+
+				var searchUrl = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricText?lyricText=" + encodeURIComponent(textareaval);
+
+                doXmlSearchLyricText(searchUrl);
+
+                //var songdata = xmlSLT(results);
+				///console.log(searchUrl)
+
+
+//step 2
+                var rawjson = '{"data":[{"id":"7857250","readable":true,"title":"We Are The Champions","link":"http:\/\/www.deezer.com\/track\/7857250","duration":"187","rank":"894947","preview":"http:\/\/cdn-preview-8.deezer.com\/stream\/84d64b5d143ccfa98feab4ad037b2e03-0.mp3","artist":{"id":"412","name":"Queen","link":"http:\/\/www.deezer.com\/artist\/412","picture":"http:\/\/api.deezer.com\/2.0\/artist\/412\/image"},"album":{"id":"725315","title":"Greatest Hits","cover":"http:\/\/api.deezer.com\/2.0\/album\/725315\/image"},"type":"track"}],"total":442,"next":"http:\/\/api.deezer.com\/2.0\/search?q=champions&nb_items=1&index=1"}';
+                var json = JSON.parse(rawjson);
+                //console.log("JSON Data: " + json.data[0].title);
+
+                jQuery('#_song').append('<img class="cover" src=' +json.data[0].album.cover + '/><p class="title">' +json.data[0].title + '</p><p class="artist">' +json.data[0].artist.name + '</p><p class="artist">' +json.data[0].album.title + ' album</p><embed type="application/x-shockwave-flash" flashvars="audioUrl=' + json.data[0].preview + '" src="http://www.google.com/reader/ui/3523697345-audio-player.swf"  width="400" height="27" quality="best"></embed>');
+
+            });
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+	<div class="content">
+        <h1>What the hell was that song again?</h1>
+        <form>
+        	
+            <label for="_typelyrics">Enter your lyrics:</label>
+            <textarea id="_typelyrics" value=""></textarea>
+            <input class="btn_submit" id="_searchlyrics" type="button" value="GO!" />
+            
+        </form>
+    	<div class="clear"></div>
+    </div>
+	
+    
+    <div id="_results" class="results">
+        <h1>Get Chart Lyric for me please</h1>
+    </div>
+    
+    <div id="_song" class="results songs">
+        <h1>Get Deezer for me please</h1>
+    </div>
+    
+</body>
+</html>
